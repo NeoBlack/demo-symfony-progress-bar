@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProgressBarController!{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/progress.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/progress.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1>Hello ProgressBar!</h1>
+            <p>This friendly message is coming from:</p>
+            <ul>
+                <li>Your controller at <code><a href="{{ '/Volumes/Workspace/progress/src/Controller/ProgressBarController.php'|file_link(0) }}">src/Controller/ProgressBarController.php</a></code></li>
+                <li>Your template at <code><a href="{{ '/Volumes/Workspace/progress/templates/progress_bar/index.html.twig'|file_link(0) }}">templates/progress_bar/index.html.twig</a></code></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="progress-simulation" data-url="{{ path('progress_simulation') }}">
+
+        <hr/>
+
+        <h2>HTML5 Progress Bar</h2>
+        <progress id="html-progress" max="100" value="0" style="width: 100%">
+            <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+            <div class="progress-bar">
+                <span>0%</span>
+            </div>
+        </progress>
+
+        <hr/>
+
+        <h2>Bootstrap Progress Bar</h2>
+        <div id="bootstrap-progress" class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span>0%</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
