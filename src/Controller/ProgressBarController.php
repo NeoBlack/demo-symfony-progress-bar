@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\ProgressDemoRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProgressBarController extends AbstractController
@@ -23,30 +23,22 @@ class ProgressBarController extends AbstractController
 
     /**
      * @Route("/progress/simulation", name="progress_simulation")
-     * @param SessionInterface $session
      * @return JsonResponse
      * @throws Exception
      */
-    public function simulation(SessionInterface $session): JsonResponse
+    public function simulation(ProgressDemoRepository $progressDemoRepository): JsonResponse
     {
-        $runner = 'progress-simulation';
-        $total = 100;
-        $running = $session->get($runner);
-        if ($running === null) {
-            $running = 1;
-            $session->set($runner, $running);
+        $total = count($progressDemoRepository->findAll());
+        foreach ($progressDemoRepository->findBy(['updated' => 0], null, 10) as $nextRecord) {
+            $nextRecord->setUpdated(1);
+            $progressDemoRepository->persist($nextRecord);
         }
-        if ($running < $total) {
-            $running += random_int(0, 10);
-            $session->set($runner, $running);
-        }
-        if ($running >= $total) {
-            $session->set($runner, null);
-        }
+        sleep(random_int(0, 4));
+        $updated = count($progressDemoRepository->findBy(['updated' => 1]));
         return $this->json([
             'total' => $total,
-            'current' => $running,
-            'progress' => $running > $total ? 1 : $running / $total
+            'updated' => $updated,
+            'progress' => $updated > $total ? 1 : $updated / $total
         ]);
     }
 }
