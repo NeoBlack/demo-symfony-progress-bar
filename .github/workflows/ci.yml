@@ -1,0 +1,38 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.2', '7.3', '7.4']
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up PHP Version ${{ matrix.php }}
+        run: |
+          sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+          php -v
+
+      - name: php --version
+        run: php --version
+
+      - name: composer --version
+        run: composer --version
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: (COMPOSER) Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+      - name: (CGL) PHP
+        run: composer cgl
+
+      - name: Lint PHP
+        run: composer test:php:lint
