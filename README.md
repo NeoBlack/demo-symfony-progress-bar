@@ -12,4 +12,11 @@ Both resolve the same data from the symfony demo controller (`App\Controller\Pro
 
    `composer install`
    
-3) open your browser ;)
+3) Setup your database
+
+   Set your database credentials in your `.env.local` file, set `DATABASE_URL`
+   Then run: `bin/console doctrine:database:create` (if your database not exists)
+   Then run: `bin/console doctrine:migrations:migrate` to create the database schema
+   Then run: `bin/console demo:reset-database` to create or reset the demo data
+   
+4) open your browser ;)
