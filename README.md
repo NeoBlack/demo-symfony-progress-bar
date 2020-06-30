@@ -18,8 +18,8 @@ Both resolve the same data from the symfony demo controller (`App\Controller\Pro
    
    Then run: `bin/console doctrine:database:create` (if your database not exists)
    
-   Then run: `bin/console doctrine:migrations:migrate` to create the database schema
+   Then run: `bin/console doctrine:migrations:migrate` (to create the database schema)
    
-   Then run: `bin/console demo:reset-database` to create or reset the demo data
+   Then run: `bin/console demo:reset-database` (to create or reset the demo data)
    
 4) open your browser ;)
